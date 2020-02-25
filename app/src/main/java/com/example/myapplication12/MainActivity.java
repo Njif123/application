@@ -2,37 +2,36 @@ package com.example.myapplication12;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.TextView;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    ArrayList<String> myArray;
     EditText et1;
-    Button btn1;
+    Button btn1, btn2;
     TextView tv1;
-    String s, k;
-    private static final String TAG = "myLogs";
+    textUtility TextUtility;
+    Intent startSecondActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btn1 = (Button) findViewById(R.id.btn1);
-        tv1 = (TextView) findViewById(R.id.tv1);
-        Arr();
+        btn1 =  findViewById(R.id.btn1);
+        tv1 =  findViewById(R.id.tv1);
+        et1 = findViewById(R.id.et1);
+        btn2 = findViewById(R.id.btn2);
+        TextUtility = new textUtility();
+        TextUtility.testFileFunc(this);
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,50 +39,31 @@ public class MainActivity extends AppCompatActivity {
                 searchWord(v);
             }
         });
-
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+             startSecondActivity = new Intent(MainActivity.this, proverk.class);
+             startActivity(startSecondActivity);
+            }
+        });
     }
-    public void Arr(){
-        myArray = new ArrayList<>();
-        try{
-            File words = new File("/lop1v3.txt");
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(
-                                new FileInputStream(words), "UTF8"));
 
-                String str;
-
-                while ((str = in.readLine()) != null) {
-                    myArray.add(str);
-                }
-
-                in.close();
-            }
-            catch (UnsupportedEncodingException e)
-            {
-                Log.e("myapp","Oshiba");
-            }
-            catch (IOException e)
-            {
-                Log.e("myapp", "2");
-            }
-            catch (Exception e)
-            {
-                Log.e("myapp","3");
-            }
-        }
         public void searchWord(View view){
         String s = et1.getText().toString();
-        for(int i = 0; i<myArray.size(); i++){
-            if(s.toUpperCase()==(String)(myArray.get(i)).toUpperCase()){
-                tv1.setText((String)(myArray.get(i)));
-                break;
+        String result = TextUtility.searchWord(s);
+            // форматирование первого заглавновного символа в строке
+            SpannableStringBuilder resultSpan = new SpannableStringBuilder(result);
+            for (char ch: result.toCharArray()){
+                if (Character.isUpperCase(ch)){
+                    resultSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorAccent)),
+                            result.indexOf(ch), result.indexOf(ch)+1,
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
             }
-            else{
-                tv1.setText("Такого слова нет");
-            }
+            tv1.setText(resultSpan);
         }
         }
-        }
+
 
 
 
