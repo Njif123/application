@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 
 public class textUtility {
-    private ArrayList<String> myArray = new ArrayList<>();
+    public ArrayList<String> myArray = new ArrayList<>();
 
     public void testFileFunc(Context ctx){
         myArray = new ArrayList<>();

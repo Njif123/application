@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">My Application12</string>
+    <string name="app_name">Ударения русского языка</string>
+    <string name="back">Назад</string>
+    <string name="level">Уровень:</string>
+    <string name="level1">Уровень: 1</string>
+    <string name="question">Выберите верный вариант:</string>
 </resources>
