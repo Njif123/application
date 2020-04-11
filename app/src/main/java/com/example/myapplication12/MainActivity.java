@@ -10,33 +10,77 @@ import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+
+public class MainActivity extends AppCompatActivity  {
     private long backPressedTime;
+    SearchView sv;
     private Toast backToast;
     EditText et1;
     Button btn2;
+    Button btn1;
     TextView tv1;
     textUtility TextUtility;
+    searchView_listenner svl;
+    ListView lv;
     Intent startSecondActivity;
-
+    //ArrayAdapter adapter;
+    ArrayAdapter testAD;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // btn1 =  findViewById(R.id.btn1);
-        tv1 = findViewById(R.id.tv1);
-        // et1 = findViewById(R.id.et1);
+       // btn1 =  findViewById(R.id.btn1
+        // = findViewById(R.id.et1);
+        sv = findViewById(R.id.searchView);
         btn2 = findViewById(R.id.btn2);
+        lv = findViewById(R.id.listView);
         TextUtility = new textUtility();
+       // svl = new searchView_listenner(adapter);
+
+       // adapter = TextUtility.arrayAdapter(getApplicationContext());
+
         TextUtility.testFileFunc(this);
+
+        ArrayList<String> test ;
+
+        test = TextUtility.myArray;
+
+        testAD = new MyArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, test);
+
+        lv.setAdapter(testAD);
+
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                testAD.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+//        btn1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                searchWord(v);
+//            }
+//        });
 
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,39 +108,34 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuItem menuItem = menu.findItem(R.id.action_search);
-        getMenuInflater().inflate(R.menu.toolbar, menu);
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.toolbar, menu);
+//        MenuItem menuItem = menu.findItem(R.id.action_search);
+//        SearchView sw = (SearchView) menuItem.getActionView();
+//        (sw).setOnQueryTextListener(new searchView_listenner(adapter));
+//
+//        return true;
+//    }
 
-        return true;
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        return false;
-    }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-
+        //super.onBackPressed();
+        boolean flag = true;
+        Toast toast = Toast.makeText(getApplicationContext(), "Нажми ещё раз, чтобы выйти", Toast.LENGTH_SHORT);
         if(backPressedTime + 2000 < System.currentTimeMillis()){
-           // backToast.cancel();
-            super.onBackPressed();
-            return;
+            toast.show();
+            backPressedTime = System.currentTimeMillis();
         }
         else{
-             Toast.makeText(getBaseContext(), "Нажмите ещё раз, чтобы выйти", Toast.LENGTH_SHORT).show();
-            //backToast.show();
-        }
 
-        backPressedTime = System.currentTimeMillis();
+            toast.cancel();
+            super.onBackPressed();
+
+
+            // toast.makeText( "Нажмите ещё раз, чтобы выйти", Toast.LENGTH_SHORT).show();
+        }
 
     }
 }

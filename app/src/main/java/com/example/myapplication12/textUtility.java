@@ -2,6 +2,7 @@ package com.example.myapplication12;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,11 +13,12 @@ import java.util.ArrayList;
 
 
 public class textUtility {
+    ArrayAdapter adapter;
     public ArrayList<String> myArray = new ArrayList<>();
 
     public void testFileFunc(Context ctx){
         myArray = new ArrayList<>();
-        InputStream inputStream = ctx.getResources().openRawResource(R.raw.lop1v3);
+        InputStream inputStream = ctx.getResources().openRawResource(R.raw.lop1v4);
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
         BufferedReader in = new BufferedReader(inputStreamReader);
 
@@ -24,6 +26,7 @@ public class textUtility {
             String str;
 
             while ((str = in.readLine()) != null) {
+                if(!str.isEmpty())
                 myArray.add(str);
 
             }
@@ -58,5 +61,11 @@ public class textUtility {
         }
         return result;
     }
+
+    public ArrayAdapter arrayAdapter(Context con) {
+            adapter = new ArrayAdapter(con, android.R.layout.simple_list_item_1, myArray);
+        return adapter;
+    }
+
     }
 
