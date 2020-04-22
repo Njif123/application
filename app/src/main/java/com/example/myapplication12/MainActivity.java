@@ -10,6 +10,7 @@ import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +35,6 @@ public class MainActivity extends AppCompatActivity  {
     textUtility TextUtility;
     searchView_listenner svl;
     ListView lv;
-    Intent startSecondActivity;
     //ArrayAdapter adapter;
     ArrayAdapter testAD;
     @Override
@@ -75,6 +75,14 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
 
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast toast = Toast.makeText(getApplicationContext(), "Нажми ещё раз", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+
 //        btn1.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -85,9 +93,7 @@ public class MainActivity extends AppCompatActivity  {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startSecondActivity = new Intent(MainActivity.this, proverk.class);
-                startActivity(startSecondActivity);
-                finish();
+               startActivity();
             }
         });
     }
@@ -137,6 +143,11 @@ public class MainActivity extends AppCompatActivity  {
             // toast.makeText( "Нажмите ещё раз, чтобы выйти", Toast.LENGTH_SHORT).show();
         }
 
+    }
+    public void startActivity(){
+        Intent startSecondActivity = new Intent(this, Proverk.class);
+        startActivity(startSecondActivity);
+        finish();
     }
 }
 
