@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,17 +15,32 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication12.pojo.Example;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 
 public class MainActivity extends AppCompatActivity  {
+    TextView response1;
+    ImageButton cancelBtn;
+    WikiApi wikiApi;
+    private Retrofit mRetrofit;
+    Example ex;
+    NetworkService networkService;
     private long backPressedTime;
     SearchView sv;
     private Toast backToast;
@@ -37,6 +53,7 @@ public class MainActivity extends AppCompatActivity  {
     ListView lv;
     //ArrayAdapter adapter;
     ArrayAdapter testAD;
+    String extr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,20 +64,30 @@ public class MainActivity extends AppCompatActivity  {
         sv = findViewById(R.id.searchView);
         btn2 = findViewById(R.id.btn2);
         lv = findViewById(R.id.listView);
+        cancelBtn = findViewById(R.id.cancelBtn);
         TextUtility = new textUtility();
-       // svl = new searchView_listenner(adapter);
+        networkService = NetworkService.getInstance();
+        ex = new Example();
+        wikiApi = networkService.getWikiApi();
+        response1 = findViewById(R.id.responseRetr);
 
-       // adapter = TextUtility.arrayAdapter(getApplicationContext());
 
         TextUtility.testFileFunc(this);
 
-        ArrayList<String> test ;
+        final ArrayList<String> test ;
 
         test = TextUtility.myArray;
 
         testAD = new MyArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, test);
 
         lv.setAdapter(testAD);
+
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                response1.setText("Здесь будет выводиться информация о слове");
+            }
+        });
 
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -78,17 +105,33 @@ public class MainActivity extends AppCompatActivity  {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Нажми ещё раз", Toast.LENGTH_SHORT);
-                toast.show();
-            }
+                String item = lv.getItemAtPosition(position).toString().toLowerCase();
+
+
+                try {
+                    wikiApi.getSummary(item).enqueue(new Callback<Example>() {
+                        @Override
+                        public void onResponse(retrofit2.Call<Example> call, Response<Example> response) {
+                            try{
+                            extr = response.body().getExtract();
+                            response1.setText(extr);}
+                            catch(NullPointerException e) {
+                                Toast.makeText(getApplicationContext(), "К сожалению, информация недоступна", Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(retrofit2.Call<Example> call, Throwable t) {
+                            Toast.makeText(getApplicationContext(), "UPS", Toast.LENGTH_SHORT).show();
+                            Log.d("LOG", t.toString());
+                        }
+                    });
+                }
+                catch(Exception e) {
+                }
+                }
         });
 
-//        btn1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                searchWord(v);
-//            }
-//        });
 
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,16 +156,6 @@ public class MainActivity extends AppCompatActivity  {
         tv1.setText(resultSpan);
     }
 
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.toolbar, menu);
-//        MenuItem menuItem = menu.findItem(R.id.action_search);
-//        SearchView sw = (SearchView) menuItem.getActionView();
-//        (sw).setOnQueryTextListener(new searchView_listenner(adapter));
-//
-//        return true;
-//    }
 
 
     @Override

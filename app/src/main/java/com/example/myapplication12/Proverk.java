@@ -9,6 +9,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
@@ -24,7 +25,10 @@ import java.util.Random;
 public class Proverk extends AppCompatActivity {
     textUtility TextUtility;
     Integer b = 0;
-
+    public int index;
+    String ind;
+    public int z;
+    public ArrayList<String> randArr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,7 @@ public class Proverk extends AppCompatActivity {
         TextUtility.testFileFunc(this);
         ArrayList<String> test;
         test = TextUtility.myArray;
+        randArr = new ArrayList<>();
         TextView word = findViewById(R.id.word);
         List<Character> glas = new ArrayList<>();
         glas.add('Ё');
@@ -59,7 +64,15 @@ public class Proverk extends AppCompatActivity {
         glas.add('И');
         glas.add('Ю');
 
-        final String result = test.get(random.nextInt(test.size() + 1)).toUpperCase();
+        for (int i = 0; i<11; i++){
+            randArr.add(test.get(random.nextInt(test.size())));
+            i++;
+        }
+       
+         ind = randArr.get(z);
+         index = getIndex(ind);
+
+        final String result = ind.toUpperCase();
         SpannableStringBuilder resultSpan = new SpannableStringBuilder(result);
 
         for (int i = 0; i < result.toCharArray().length; i++) {
@@ -84,9 +97,22 @@ public class Proverk extends AppCompatActivity {
 //            }
 //        }
         word.setText(resultSpan);
+        word.setMovementMethod(LinkMovementMethod.getInstance());
+
+}
+    private int getIndex(String s){
+       int index = 0;
+        s.toCharArray();
+        for ( int i =0; i<s.toCharArray().length; i++){
+            Character a = s.toCharArray()[i];
+            if(a == Character.toUpperCase(s.toCharArray()[i])){
+                index=i;
+                break;
+            }
+            i++;
+        }
+        return index;
     }
-
-
 
     private ClickableSpan getClickableSpan(final int i) {
         return new ClickableSpan() {
@@ -98,8 +124,15 @@ public class Proverk extends AppCompatActivity {
 
             @Override
             public void onClick(@NonNull View widget) {
-                Toast.makeText(Proverk.this, "Нажми ещё раз", Toast.LENGTH_SHORT).show();
+                if(c==index){
+                Toast.makeText(Proverk.this, "правильно", Toast.LENGTH_SHORT).show();
                 Log.d("TAG", "кликнулось");
+                }
+                else{
+                    Toast.makeText(Proverk.this, "неправильно", Toast.LENGTH_SHORT).show();
+                    Log.d("TAG", "кликнулось");
+
+                }
                 synchronized (b) {
 
                 }

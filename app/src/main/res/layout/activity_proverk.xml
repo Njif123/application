@@ -10,6 +10,7 @@
 
     <TextView
         android:id="@+id/task"
+        android:textColor="@color/black90"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="поставьте верное ударение"
@@ -20,6 +21,7 @@
         android:layout_marginTop="275dp"/>
 
     <TextView
+        android:textColor="@color/black90"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
