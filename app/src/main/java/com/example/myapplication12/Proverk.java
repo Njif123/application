@@ -27,8 +27,9 @@ public class Proverk extends AppCompatActivity {
     Integer b = 0;
     public int index;
     String ind;
-    public int z;
-    public ArrayList<String> randArr;
+    public int z = 0;
+    public String[] randArr;
+    public TextView word;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +51,8 @@ public class Proverk extends AppCompatActivity {
         TextUtility.testFileFunc(this);
         ArrayList<String> test;
         test = TextUtility.myArray;
-        randArr = new ArrayList<>();
-        TextView word = findViewById(R.id.word);
+        randArr = new String[10];
+        word = findViewById(R.id.word);
         List<Character> glas = new ArrayList<>();
         glas.add('Ё');
         glas.add('У');
@@ -64,13 +65,13 @@ public class Proverk extends AppCompatActivity {
         glas.add('И');
         glas.add('Ю');
 
-        for (int i = 0; i<11; i++){
-            randArr.add(test.get(random.nextInt(test.size())));
-            i++;
+        for (int i = 0; i<10; i++){
+            randArr[i] = test.get(random.nextInt(test.size()));
         }
-       
-         ind = randArr.get(z);
-         index = getIndex(ind);
+        ind = randArr[z];
+        while (z<randArr.length) {
+
+        index = getIndex(ind);
 
         final String result = ind.toUpperCase();
         SpannableStringBuilder resultSpan = new SpannableStringBuilder(result);
@@ -78,7 +79,7 @@ public class Proverk extends AppCompatActivity {
         for (int i = 0; i < result.toCharArray().length; i++) {
             Character a = result.toCharArray()[i];
             if (glas.contains(a)) {
-                SpannableString s = new SpannableString(a+"");
+                SpannableString s = new SpannableString(a + "");
                 s.setSpan(getClickableSpan(i),
                         0,
                         s.length(),
@@ -98,8 +99,25 @@ public class Proverk extends AppCompatActivity {
 //        }
         word.setText(resultSpan);
         word.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+}
+
+
+public void spanBuild(String result){
 
 }
+
+    public void nextWord(){
+        if(z<randArr.length){
+            z++;
+            ind = randArr[z];
+            word.setText(randArr[z]);
+        }
+        else {
+            Log.d("TAG", "конец массива");
+        }
+    }
+
     private int getIndex(String s){
        int index = 0;
         s.toCharArray();
@@ -127,6 +145,7 @@ public class Proverk extends AppCompatActivity {
                 if(c==index){
                 Toast.makeText(Proverk.this, "правильно", Toast.LENGTH_SHORT).show();
                 Log.d("TAG", "кликнулось");
+                nextWord();
                 }
                 else{
                     Toast.makeText(Proverk.this, "неправильно", Toast.LENGTH_SHORT).show();
