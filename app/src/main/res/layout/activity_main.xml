@@ -8,30 +8,6 @@
     tools:context=".MainActivity">
 
 
-    <!--    <EditText-->
-    <!--        android:id="@+id/et1"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="56dp"-->
-    <!--        android:layout_marginHorizontal="15dp"-->
-    <!--        android:hint="Введите слово"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-    <!--    <Button-->
-    <!--        android:id="@+id/btn1"-->
-    <!--        android:layout_width="232dp"-->
-    <!--        android:layout_height="54dp"-->
-    <!--        android:layout_marginTop="44dp"-->
-    <!--        android:text="Поиск"-->
-    <!--        android:textSize="22dp"-->
-    <!--        android:textColor="@android:color/white"-->
-    <!--        android:background="@color/colorPrimary"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/et1" />-->
-
-
     <Button
         android:id="@+id/btn2"
         android:layout_width="232dp"
@@ -50,30 +26,26 @@
         android:id="@+id/responseRetr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="10dp"
+        android:paddingLeft="10dp"
         android:text="Здесь будет выводиться информация о слове"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView" />
+        app:layout_constraintTop_toBottomOf="@+id/cancelBtn" />
 
     <ImageButton
         android:id="@+id/cancelBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/responseRetr"
-       android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:src="@mipmap/cancelbtn"/>
+        android:src="@mipmap/cancelbtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchView" />
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="5dp"
         android:padding="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/responseRetr">

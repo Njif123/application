@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class textUtility {
     ArrayAdapter adapter;
     public ArrayList<String> myArray = new ArrayList<>();
-
+    //чтение из файла
     public void testFileFunc(Context ctx){
         myArray = new ArrayList<>();
         InputStream inputStream = ctx.getResources().openRawResource(R.raw.lop1v4);
@@ -34,7 +34,7 @@ public class textUtility {
         }
         catch (UnsupportedEncodingException e)
         {
-            Log.e("myapp","Oshibka");
+            Log.e("myapp","UnsupportedEncodingException");
         }
         catch (IOException e)
         {
@@ -42,25 +42,10 @@ public class textUtility {
         }
         catch (Exception e)
         {
-            Log.e("myapp","3");
+            Log.e("myapp","error");
         }
     }
-    public String searchWord(String word){
-        String result ="";
 
-        for(int i = 0; i<myArray.size(); i++){
-            String slovo = (myArray.get(i)).toUpperCase();
-            if((word.toUpperCase()).equals(slovo)){
-                Log.i("myApp", slovo);
-                result= myArray.get(i);
-                break;
-            }
-            else{
-                result = "Такого слова нет";
-            }
-        }
-        return result;
-    }
 
     public ArrayAdapter arrayAdapter(Context con) {
             adapter = new ArrayAdapter(con, android.R.layout.simple_list_item_1, myArray);

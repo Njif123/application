@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity  {
     textUtility TextUtility;
     searchView_listenner svl;
     ListView lv;
-    //ArrayAdapter adapter;
     ArrayAdapter testAD;
     String extr;
     @Override
@@ -59,8 +58,6 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       // btn1 =  findViewById(R.id.btn1
-        // = findViewById(R.id.et1);
         sv = findViewById(R.id.searchView);
         btn2 = findViewById(R.id.btn2);
         lv = findViewById(R.id.listView);
@@ -81,7 +78,7 @@ public class MainActivity extends AppCompatActivity  {
         testAD = new MyArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, test);
 
         lv.setAdapter(testAD);
-
+        //Кнопка, убирающая информацию о слове
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,7 +98,7 @@ public class MainActivity extends AppCompatActivity  {
                 return false;
             }
         });
-
+        //Обработка клика по слову
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -122,7 +119,7 @@ public class MainActivity extends AppCompatActivity  {
 
                         @Override
                         public void onFailure(retrofit2.Call<Example> call, Throwable t) {
-                            Toast.makeText(getApplicationContext(), "UPS", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Проблемы с соединением", Toast.LENGTH_SHORT).show();
                             Log.d("LOG", t.toString());
                         }
                     });
@@ -141,26 +138,11 @@ public class MainActivity extends AppCompatActivity  {
         });
     }
 
-    public void searchWord(View view) {
-        String s = et1.getText().toString();
-        String result = TextUtility.searchWord(s);
-        // форматирование первого заглавновного символа в строке
-        SpannableStringBuilder resultSpan = new SpannableStringBuilder(result);
-        for (char ch : result.toCharArray()) {
-            if (Character.isUpperCase(ch)) {
-                resultSpan.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorAccent)),
-                        result.indexOf(ch), result.indexOf(ch) + 1,
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-        }
-        tv1.setText(resultSpan);
-    }
 
 
-
+    //двойной клик по кнопке назад для выхода из приложения
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
         boolean flag = true;
         Toast toast = Toast.makeText(getApplicationContext(), "Нажми ещё раз, чтобы выйти", Toast.LENGTH_SHORT);
         if(backPressedTime + 2000 < System.currentTimeMillis()){
@@ -172,8 +154,6 @@ public class MainActivity extends AppCompatActivity  {
             toast.cancel();
             super.onBackPressed();
 
-
-            // toast.makeText( "Нажмите ещё раз, чтобы выйти", Toast.LENGTH_SHORT).show();
         }
 
     }
